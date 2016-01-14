@@ -6,14 +6,15 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:48:15 by abureau           #+#    #+#             */
-/*   Updated: 2016/01/14 15:50:04 by abureau          ###   ########.fr       */
+/*   Updated: 2016/01/14 16:24:36 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "get_next_line.h"
 
-int main(int argc, char argv)
+int main(void)
 {
 	ft_putendl("TEST");
+	return (0);
 }

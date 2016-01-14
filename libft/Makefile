@@ -6,11 +6,13 @@
 #    By: abureau <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/04 12:47:45 by abureau           #+#    #+#              #
-#    Updated: 2016/01/11 15:50:16 by abureau          ###   ########.fr        #
+#    Updated: 2016/01/14 16:27:06 by abureau          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME = libft.a
+
+DIRSRC = ./includes/
 
 CC = gcc
 
@@ -98,20 +100,21 @@ SRCS = ft_atoi.c \
 		ft_lstiter.c \
 		ft_lstmap.c
 
-HEAD = libft.h
+HEAD = ./includes/libft.h
 
+OBJ = $(OBJS:%=$(DIRSRC)%)
 OBJS = $(SRCS:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	ar rc $(NAME) $(OBJS)
+$(NAME): $(OBJ)
+	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
 clean:
-	rm -f *.o
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
