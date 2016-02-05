@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:40:53 by abureau           #+#    #+#             */
-/*   Updated: 2016/02/04 17:39:34 by abureau          ###   ########.fr       */
+/*   Updated: 2016/02/05 14:22:48 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
-static int	get_line(char *str, char **line)
+static int	get_buf(char *str, char **line)
 {
 	int carac;
 	char *my_line;
@@ -33,22 +33,31 @@ static int	get_line(char *str, char **line)
 
 int get_next_line(int const fd, char **line)
 {
-	char	buf[BUFF_SIZE + 1];
-	int		retu;
-	int ret;
-//	static char	*line_read;
+	char		buf[BUFF_SIZE + 1];
+	int			retu;
+	int			ret;
+	static char	*line_read;
 
 	ret = read(fd, buf, BUFF_SIZE);
+	ft_putstr("value of ret : ");ft_putnbrnl(ret);
 	buf[ret] = '\0';
 	//ft_putendl("debug :");
 	
 	//ft_putendl(buf);
-	retu = get_line(buf, line);
+	retu = get_buf(buf, line);
 	if (retu == ret)
+	{
 		get_next_line(fd, line);
-	else
+	}
+	else if (retu < ret)
+	{
 		free(*line);
-//	line_read = ft_strdup(*line);
+		line_read = ft_strdup(*line);
+//		ft_putstr("LINE_READ : "); ft_putendl(line_read);
+	}
 	
+
+	ft_putstr("\n \nRet = "); ft_putnbrnl(ret);
+	ft_putstr("Retu = "); ft_putnbrnl(retu);
 	return (retu);
 }

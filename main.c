@@ -17,20 +17,24 @@
 int main(int a, char **b)
 {
 	int i = -1;
+	int j = 0;
 	char *line;
 	int fd = open(b[1], O_RDONLY);
 
-	ft_putnbr(a);
+	ft_putnbrnl(a);
 	
-	ft_putendl("TEST");
+
 	line = NULL;
-	if(a == 2)
-	{
-		while((i = get_next_line(fd, &line)))
-		{
-			ft_putnbr(i);
-		ft_putendl(line);
+	if(a == 3)
+      	{
+	ft_putendl("TEST");
+	  while(j  < ft_atoi(b[2]))
+	    {
+	      i = get_next_line(fd, &line);
+	      ft_putnbrnl(i);
+	      ft_putendl(line);
 		i++;
+		j++;
 		}
 	}
 	return (0);
