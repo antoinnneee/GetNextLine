@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:48:15 by abureau           #+#    #+#             */
-/*   Updated: 2016/03/07 19:19:49 by abureau          ###   ########.fr       */
+/*   Updated: 2016/03/07 19:21:01 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int fd;
 	ft_putendl("Starting For Loop");
 	for (i = 0; i < 13; i++)
 	{
-		j = get_next_line(2222222, &line);
+		j = get_next_line(22, &line);
 		if (j == 1)
 			ft_putendl(line);
 		else if (j == 0)

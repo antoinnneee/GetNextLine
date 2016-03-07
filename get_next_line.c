@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:40:53 by abureau           #+#    #+#             */
-/*   Updated: 2016/03/07 19:16:34 by abureau          ###   ########.fr       */
+/*   Updated: 2016/03/07 19:23:33 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int get_next_line(int const fd, char **line)
 	out = 0;
 	ret = 0;
 	state = 0;
-		if (fd < 0)
+		if (fd < 0 || fd > 255)
 		{
 			return(-1);
 		}
@@ -76,6 +76,8 @@ int get_next_line(int const fd, char **line)
 		else
 			while ((ret = read(fd, buf, BUFF_SIZE)))
 			{
+				if (ret < 0)
+					return (-1);
 				buf[ret] = '\0';
 				tmpbuff = ft_strjoin(tmpbuff, buf);
 //				ft_putendl("WHILE LOOP");
