@@ -6,22 +6,36 @@
 #    By: abureau <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/04 12:47:45 by abureau           #+#    #+#              #
-#    Updated: 2016/02/05 13:59:53 by abureau          ###   ########.fr        #
+#    Updated: 2016/02/24 16:13:48 by abureau          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-NAME = GNL
+NAME = test_gnl
 
 DIRSRC = ./includes/
 
-CC = gcc
+SRC = ./get_next_line.c \
+	./main.c
 
+CC = clang
+
+OBJ = $(SRC:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): 
-clang -Wall -Wextra -Werror -I libft/includes -o get_next_line.o -c get_next_line.c
-clang -Wall -Wextra -Werror -I libft/includes -o main.o -c main.c
-clang -o test_gnl main.o get_next_line.o -I libft/includes -L libft/ -lft
+$(NAME): $(OBJ) 
+	$(CC) -o $@ $^ -I libft/includes -L libft/ -lft
+
+%.o: %.c
+	$(CC) $(CFLAGS) -I libft/includes -o $@ -c $<
+
+fclean:
+	rm -f get_next_line.o
+	rm -f main.o
+	rm -f test_gnl
+
+re: fclean all
+
+
