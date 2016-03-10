@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:40:53 by abureau           #+#    #+#             */
-/*   Updated: 2016/03/10 17:08:06 by abureau          ###   ########.fr       */
+/*   Updated: 2016/03/10 18:11:31 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,10 @@ static int	parsing(char **tmpbuff, char **line, int const fd)
 {
 	size_t index;
 
-	index = 0;
 	*line = ft_strdup(ft_strsub(tmpbuff[fd], 0, ft_strlenn(tmpbuff[fd])));
 	tmpbuff[fd] = ft_strrdup(tmpbuff[fd]);
-	while (index <= 255)
-	{
-		if (tmpbuff[fd][index] == '\0')
+	index = ft_strlenn(tmpbuff[fd]);
+	if (tmpbuff[fd][index] == '\0')
 		{
 			return (1);
 		}
@@ -61,9 +59,6 @@ static int	parsing(char **tmpbuff, char **line, int const fd)
 		{
 			return (1);
 		}
-		else
-			return (0);
-	}
 	return (0);
 }
 
@@ -97,7 +92,7 @@ int			get_next_line(int const fd, char **line)
 
 	lafonctionquimallocletableau(&tmpbuff);
 	ret = -42;
-	
+	out = 2;
 	if (fd < 0 || fd > 255)
 		return (-1);
 		if (ft_strlenn(tmpbuff[fd]) == ft_strlen(tmpbuff[fd]))
@@ -113,12 +108,22 @@ int			get_next_line(int const fd, char **line)
 		{
 			out = parsing(tmpbuff, line, fd);
 		}
-	if (ret == 0)
+	if (ret == 0) 
 	{
-		parsing(tmpbuff, line, fd);
-		if (tmpbuff[fd])
-			tmpbuff[fd] = ft_strrdup(tmpbuff[fd]);
-		out = 0;
+		if (ft_strlenn(tmpbuff[fd]) == ft_strlen(tmpbuff[fd]) && ft_strlen(tmpbuff[fd]) > 0)
+		{
+			parsing(tmpbuff, line, fd);
+			if (tmpbuff[fd])
+				tmpbuff[fd] = ft_strrdup(tmpbuff[fd]);
+			out = 1;
+		}
+		else if (ft_strlenn(tmpbuff[fd]) == ft_strlen(tmpbuff[fd]))
+		{
+			parsing(tmpbuff, line, fd);
+			if (tmpbuff[fd])
+				tmpbuff[fd] = ft_strrdup(tmpbuff[fd]);
+			out = 0;
+		}
 	}
 	if (out == 2)
 		return (get_next_line(fd, line));
