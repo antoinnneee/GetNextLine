@@ -63,21 +63,23 @@ static int	parsing(char **tmpbuff, char **line, int const fd)
 }
 
 
-static void	lafonctionquimallocletableau(char ***buff)
+static void	lafonctionquimallocletableau(char ***buff, int *ret)
 {
 	int index;
 	char **tmpbuff;
 
+	*ret = -42
 	index = 0;
 	tmpbuff = NULL;
 	if (!*buff)
 	{
 		tmpbuff = (char**)malloc(sizeof(char*) * 256);
-			while(index < 256)
-			{
-				tmpbuff[index] = (char*)malloc(sizeof(char) * (BUFF_SIZE + 1));
-				index++;
-			}
+		while(index < 256)
+		{
+			tmpbuff[index] = (char*)malloc
+				(sizeof(char) * (BUFF_SIZE + 1));
+			index++;
+		}
 	*buff = tmpbuff;
 	}
 }
@@ -90,26 +92,21 @@ int			get_next_line(int const fd, char **line)
 	static char	**tmpbuff;
 	int			out;
 
-	lafonctionquimallocletableau(&tmpbuff);
-	ret = -42;
-	out = 2;
+	lafonctionquimallocletableau(&tmpbuff, &ret);
 	if (fd < 0 || fd > 255)
 		return (-1);
-		if (ft_strlenn(tmpbuff[fd]) == ft_strlen(tmpbuff[fd]))
-		{
-			ret = read(fd, buf, BUFF_SIZE);
-			if (ret < 0)
-				return (-1);
-			buf[ret] = '\0';
-			tmpbuff[fd] = ft_strjoin(tmpbuff[fd], buf);
-			out = 2;
-		}
-		else
-		{
-			out = parsing(tmpbuff, line, fd);
-		}
-	if (ret == 0) 
+	if (ft_strlenn(tmpbuff[fd]) == ft_strlen(tmpbuff[fd]))
 	{
+		ret = read(fd, buf, BUFF_SIZE);
+		if (ret < 0)
+			return (-1);
+		buf[ret] = '\0';
+		tmpbuff[fd] = ft_strjoin(tmpbuff[fd], buf);
+		out = 2;
+	}
+	else
+		out = parsing(tmpbuff, line, fd);
+	if (ret == 0)
 		if (ft_strlenn(tmpbuff[fd]) == ft_strlen(tmpbuff[fd]) && ft_strlen(tmpbuff[fd]) > 0)
 		{
 			parsing(tmpbuff, line, fd);
@@ -124,7 +121,6 @@ int			get_next_line(int const fd, char **line)
 				tmpbuff[fd] = ft_strrdup(tmpbuff[fd]);
 			out = 0;
 		}
-	}
 	if (out == 2)
 		return (get_next_line(fd, line));
 	return (out);
