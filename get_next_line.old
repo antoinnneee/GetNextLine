@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:40:53 by abureau           #+#    #+#             */
-/*   Updated: 2016/03/08 17:36:06 by abureau          ###   ########.fr       */
+/*   Updated: 2016/03/08 16:46:17 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ int			get_next_line(int const fd, char **line)
 			tmpbuff = ft_strjoin(tmpbuff, buf);
 		}
 	else if (tmpbuff)
-	{
 		tmpbuff = ft_strredup(tmpbuff);
+
+	if (tmpbuff)
+	{
 		if (ret > 0 || ft_strlen(tmpbuff) >= 1)
 			if (state < ret || (state == 0 && ret == 0))
 			{
