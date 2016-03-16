@@ -16,7 +16,7 @@ DIRSRC = ./includes/
 
 SRC = ./get_next_line.c \
 	./main.c
-CC = clang
+CC = gcc
 
 OBJ = $(SRC:.c=.o)
 

@@ -31,7 +31,11 @@ int main(int a, char **b)
 	fd3 = open(b[3], O_RDONLY);
 	j = 0;
 	line = NULL;
-	ft_putstr("DEBUT DU PROGRAMME\n");
+	char *test = ft_strdup("SIFHEOUHEFLT");
+	ft_strjoin(test, " coucou");
+	ft_putnbr(sizeof(test));
+
+	ft_putstr("\nDEBUT DU PROGRAMME\n");
 //while ((j = get_next_line(fd, &line)) >= 0)
 while (i >= 0)
 {	
@@ -39,19 +43,16 @@ while (i >= 0)
 	if (i % 3 == 0)
 	{
 		j = get_next_line(fd, &line);
-		if (j == 1)
 			ft_putstr("LINE FD : ");ft_putendl(line);
 	}
 	else if (i % 3 == 1)
 	{
 		j = get_next_line(fd2, &line);
-		if (j == 1)
 			ft_putstr("LINE FD2 : ");ft_putendl(line);
 	}
 	else
 	{
 		j = get_next_line(fd3, &line);
-		if (j == 1)
 			ft_putstr("LINE FD3 : ");ft_putendl(line);
 	}
 	if (j == 1)

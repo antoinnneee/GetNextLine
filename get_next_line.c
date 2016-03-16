@@ -16,7 +16,8 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
-static size_t	ft_strlenn(const char *s)
+
+static size_t	strparser(const char *s)
 {
 	unsigned int	i;
 
@@ -28,8 +29,11 @@ static size_t	ft_strlenn(const char *s)
 
 static int		parsing(char **tmpbuff, char **line, int const fd)
 {
-	*line = ft_strdup(ft_strsub(tmpbuff[fd], 0, ft_strlenn(tmpbuff[fd])));
-	ft_strcpy(tmpbuff[fd], &tmpbuff[fd][ft_strlenn(tmpbuff[fd]) + 1]);
+	int	lenton;
+
+	lenton = strparser(tmpbuff[fd]);
+	*line = ft_strdup(ft_strsub(tmpbuff[fd], 0, lenton));
+	ft_strcpy(tmpbuff[fd], &tmpbuff[fd][lenton + 1]);
 	return (1);
 }
 
@@ -70,18 +74,18 @@ int				get_next_line(int const fd, char **line)
 	(!tmpb) ? mallocarray(&tmpb, &retout[0]) : (retout[0] = -42);
 	if (fd < 0 || fd > 255 || retout[0] == -1 || !line || fd > FDMAX)
 		return (-1);
-	if (ft_strlen(&tmpb[fd][ft_strlenn(tmpb[fd])]) == 0)
+	if (ft_strlen(&tmpb[fd][strparser(tmpb[fd])]) == 0)
 	{
 		if ((retout[0] = read(fd, buf, BUFF_SIZE)) < 0)
 			return (-1);
 		buf[retout[0]] = '\0';
-		tmpb[fd] = (sizeof(tmpb) >= ((sizeof(char) * ft_strlen(tmpb[fd])) +
-		sizeof(buf)) ? ft_strcat(tmpb[fd], buf) : ft_strjoin(tmpb[fd], buf));
+		tmpb[fd] = ft_strjoin(tmpb[fd], buf);
 		retout[1] = 2;
+		tmpb[fd][100] = 'C';
 	}
 	else
 		retout[1] = parsing(tmpb, line, fd);
-	if (retout[0] == 0 && (ft_strlen(&tmpb[fd][ft_strlenn(tmpb[fd])]) == 0))
+	if (retout[0] == 0 && (ft_strlen(&tmpb[fd][strparser(tmpb[fd])]) == 0))
 	{
 		retout[1] = (ft_strlen(tmpb[fd]) > 0) ? 1 : 0;
 		parsing(tmpb, line, fd);
