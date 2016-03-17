@@ -32,7 +32,10 @@ static int		parsing(char **tmpbuff, char **line, int const fd)
 	int	lenton;
 
 	lenton = strparser(tmpbuff[fd]);
-	*line = ft_strdup(ft_strsub(tmpbuff[fd], 0, lenton));
+	if (line)
+		ft_strdel(line);
+	*line = ft_strnew(lenton);
+	ft_strncpy(*line, tmpbuff[fd], lenton);
 	ft_strcpy(tmpbuff[fd], &tmpbuff[fd][lenton + 1]);
 	return (1);
 }
@@ -65,6 +68,22 @@ static void		mallocarray(char ***buff, int *ret)
 		*ret = -1;
 }
 
+static char			*superjoin(char *tmpbuff, char *readbuff)
+{
+	char	*res;
+	int	i;
+
+	i = ft_strlen(tmpbuff) + BUFF_SIZE;
+	res = ft_strnew(i);
+	if (!res)
+		return (NULL);
+	res = ft_strcat(res, tmpbuff);
+	res = ft_strcat(res, readbuff);
+	ft_strdel(&tmpbuff);
+	return (res);	
+	
+}
+
 int				get_next_line(int const fd, char **line)
 {
 	char		buf[BUFF_SIZE + 1];
@@ -72,16 +91,15 @@ int				get_next_line(int const fd, char **line)
 	static char	**tmpb;
 
 	(!tmpb) ? mallocarray(&tmpb, &retout[0]) : (retout[0] = -42);
-	if (fd < 0 || fd > 255 || retout[0] == -1 || !line || fd > FDMAX)
+	if (fd < 0 || fd > 255 || retout[0] == -1 || !line || fd > FDMAX - 1)
 		return (-1);
 	if (ft_strlen(&tmpb[fd][strparser(tmpb[fd])]) == 0)
 	{
 		if ((retout[0] = read(fd, buf, BUFF_SIZE)) < 0)
 			return (-1);
 		buf[retout[0]] = '\0';
-		tmpb[fd] = ft_strjoin(tmpb[fd], buf);
+		tmpb[fd] = superjoin(tmpb[fd], buf);
 		retout[1] = 2;
-		tmpb[fd][100] = 'C';
 	}
 	else
 		retout[1] = parsing(tmpb, line, fd);
