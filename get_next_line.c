@@ -107,8 +107,8 @@ int				get_next_line(int const fd, char **line)
 	{
 		retout[1] = (ft_strlen(tmpb[fd]) > 0) ? 1 : 0;
 		parsing(tmpb, line, fd);
-		if (tmpb[fd])
-			ft_strclr(tmpb[fd]);
+		ft_strdel(&tmpb[fd]);
+		tmpb[fd] = ft_strnew(0);
 	}
 	return ((retout[1] == 2) ? get_next_line(fd, line) : retout[1]);
 }
