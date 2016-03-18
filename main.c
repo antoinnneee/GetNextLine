@@ -17,45 +17,44 @@
 int main(int a, char **b)
 {
 	char *line;
-	int fd = 0;
+	int fd[FDMAX];
 	int i = -1;
-	int j = 0;
-	int fd2 = 0;
-	int fd3 = 0;
+	int j[FDMAX];
+	int k = 0;
 
-	if (a)
-		i = 20;
-
-	fd = open(b[1], O_RDONLY);
-	fd2 = open(b[2], O_RDONLY);
-	fd3 = open(b[3], O_RDONLY);
-	j = 0;
+	while (k < a - 1)
+	{
+		fd[k] = open(b[k + 1], O_RDONLY);
+		ft_putnbr(fd[k]);
+		k++;
+	}
+	k = 0;
 	line = NULL;
-while (1)
-{	
+while (i > -10)
+{
 	i--;
-	if (i % 3 == 0)
+	while (k < a - 1)
 	{
-		j = get_next_line(fd, &line);
-			ft_putstr("LINE FD : ");ft_putendl(line);
+		j[k] = get_next_line(fd[k], &line);
+		if (j[k] == 1)
+		{
+			ft_putstr("LINE FD");ft_putnbr(k);ft_putstr(" : ");ft_putendl(line);
+		}
+		else if (j[k] == 0)
+		{
+			ft_putstr("end of file : ");ft_putnbr(k);ft_putstr("\n");
+		}
+		else if (j[k] == -1)
+		{
+			ft_putstr("error file : ");ft_putnbr(k);ft_putstr("\n");
+		}
+		else
+		{
+			ft_putstr("bad return file : ");ft_putnbr(k);ft_putstr("\n");
+		}
+		k++;
 	}
-	else if (i % 3 == 1)
-	{
-		j = get_next_line(fd2, &line);
-			ft_putstr("LINE FD2 : ");ft_putendl(line);
-	}
-	else
-	{
-		j = get_next_line(fd3, &line);
-			ft_putstr("LINE FD3 : ");ft_putendl(line);
-	}
-	if (j == 1)
-		ft_strdel(&line);
-	if (j == 0)
-	{
-		ft_strdel(&line);
-		return(0);
-	}
+	k = 0;
 }
 /*
 		else if (j == 0)
