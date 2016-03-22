@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:40:53 by abureau           #+#    #+#             */
-/*   Updated: 2016/03/16 15:36:59 by abureau          ###   ########.fr       */
+/*   Updated: 2016/03/22 18:55:54 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
-
-static size_t	strparser(const char *s)
+static size_t		strparser(const char *s)
 {
 	unsigned int	i;
 
@@ -27,20 +26,18 @@ static size_t	strparser(const char *s)
 	return (i);
 }
 
-static int		parsing(char **tmpbuff, char **line, int const fd)
+static int			parsing(char **tmpbuff, char **line, int const fd)
 {
 	int	lenton;
 
 	lenton = strparser(tmpbuff[fd]);
-	if (line)
-		ft_strdel(line);
 	*line = ft_strnew(lenton);
 	ft_strncpy(*line, tmpbuff[fd], lenton);
 	ft_strcpy(tmpbuff[fd], &tmpbuff[fd][lenton + 1]);
 	return (1);
 }
 
-static void		mallocarray(char ***buff, int *ret)
+static void			mallocarray(char ***buff, int *ret)
 {
 	int		index;
 	char	**tmpbuff;
@@ -71,7 +68,7 @@ static void		mallocarray(char ***buff, int *ret)
 static char			*superjoin(char *tmpbuff, char *readbuff)
 {
 	char	*res;
-	int	i;
+	int		i;
 
 	i = ft_strlen(tmpbuff) + BUFF_SIZE;
 	res = ft_strnew(i);
@@ -79,16 +76,16 @@ static char			*superjoin(char *tmpbuff, char *readbuff)
 		return (NULL);
 	res = ft_strcat(res, tmpbuff);
 	res = ft_strcat(res, readbuff);
-	ft_strdel(&tmpbuff);
-	return (res);	
-	
+	if (tmpbuff)
+		ft_strdel(&tmpbuff);
+	return (res);
 }
 
-int				get_next_line(int const fd, char **line)
+int					get_next_line(int const fd, char **line)
 {
 	char		buf[BUFF_SIZE + 1];
 	int			retout[2];
-	static char	**tmpb;
+	static char	**tmpb = NULL;
 
 	(!tmpb) ? mallocarray(&tmpb, &retout[0]) : (retout[0] = -42);
 	if (fd < 0 || fd > 255 || retout[0] == -1 || !line || fd > FDMAX - 1)

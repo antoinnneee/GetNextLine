@@ -6,7 +6,7 @@
 /*   By: abureau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 15:48:15 by abureau           #+#    #+#             */
-/*   Updated: 2016/03/16 15:15:07 by abureau          ###   ########.fr       */
+/*   Updated: 2016/03/22 18:03:34 by abureau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ while (i > -10)
 	i--;
 	while (k < a - 1)
 	{
-		j[k] = get_next_line(fd[k], &line);
+				j[k] = get_next_line(50, &line);
 		if (j[k] == 1)
 		{
 			ft_putstr("LINE FD");ft_putnbr(k);ft_putstr(" : ");ft_putendl(line);
@@ -52,6 +52,7 @@ while (i > -10)
 		{
 			ft_putstr("bad return file : ");ft_putnbr(k);ft_putstr("\n");
 		}
+		ft_strdel(&line);
 		k++;
 	}
 	k = 0;
