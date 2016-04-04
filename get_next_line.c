@@ -16,21 +16,15 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
-static size_t		strparser(const char *s)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (s[i] != '\n' && s[i] != '\0')
-		i++;
-	return (i);
-}
-
-static int			parsing(char **tmpbuff, char **line, int const fd)
+static int			parsing(char **tmpbuff, char **line, int const fd, int funcchose)
 {
 	int	lenton;
 
-	lenton = strparser(tmpbuff[fd]);
+	lenton = 0;
+	while (tmpbuff[fd][lenton] != '\n' && tmpbuff[fd][lenton] != '\0')
+		lenton++;
+	if (funcchose)
+		return(lenton);
 	*line = ft_strnew(lenton);
 	ft_strncpy(*line, tmpbuff[fd], lenton);
 	ft_strcpy(tmpbuff[fd], &tmpbuff[fd][lenton + 1]);
@@ -39,29 +33,13 @@ static int			parsing(char **tmpbuff, char **line, int const fd)
 
 static void			mallocarray(char ***buff, int *ret)
 {
-	int		index;
-	char	**tmpbuff;
+	char		**tmpbuff;
 
 	*ret = -42;
-	index = 0;
-	tmpbuff = (char**)malloc(sizeof(char*) * FDMAX);
-	if (tmpbuff)
-	{
-		while (index < FDMAX)
-		{
-			tmpbuff[index] = (char*)malloc(sizeof(char));
-			if (!tmpbuff[index])
-				while (index <= 0)
-				{
-					free(tmpbuff[index]);
-					index--;
-					*ret = -1;
-				}
-			index++;
-		}
-		*buff = tmpbuff;
-	}
-	else
+	tmpbuff = NULL;
+	tmpbuff = (char**)malloc(sizeof(char*) * 100000000);
+	*buff = tmpbuff;
+	if (!tmpbuff)
 		*ret = -1;
 }
 
@@ -70,10 +48,18 @@ static char			*superjoin(char *tmpbuff, char *readbuff)
 	char	*res;
 	int		i;
 
-	i = ft_strlen(tmpbuff) + BUFF_SIZE;
+	if (tmpbuff)
+	{
+		i = ft_strlen(tmpbuff) + BUFF_SIZE;
+	}
+	else
+	{
+		i = BUFF_SIZE + 1;
+	}
 	res = ft_strnew(i);
 	if (!res)
 		return (NULL);
+	if (tmpbuff)
 	res = ft_strcat(res, tmpbuff);
 	res = ft_strcat(res, readbuff);
 	if (tmpbuff)
@@ -88,9 +74,10 @@ int					get_next_line(int const fd, char **line)
 	static char	**tmpb = NULL;
 
 	(!tmpb) ? mallocarray(&tmpb, &retout[0]) : (retout[0] = -42);
-	if (fd < 0 || fd > 255 || retout[0] == -1 || !line || fd > FDMAX - 1)
+	if (fd < 0 || retout[0] == -1 || !line )
 		return (-1);
-	if (ft_strlen(&tmpb[fd][strparser(tmpb[fd])]) == 0)
+	(!tmpb[fd]) ? (tmpb[fd] = (char*)malloc(sizeof(char))) : (void)42 ;
+	if (ft_strlen(&tmpb[fd][parsing(tmpb, line, fd, 1)]) == 0)
 	{
 		if ((retout[0] = read(fd, buf, BUFF_SIZE)) < 0)
 			return (-1);
@@ -99,11 +86,11 @@ int					get_next_line(int const fd, char **line)
 		retout[1] = 2;
 	}
 	else
-		retout[1] = parsing(tmpb, line, fd);
-	if (retout[0] == 0 && (ft_strlen(&tmpb[fd][strparser(tmpb[fd])]) == 0))
+		retout[1] = parsing(tmpb, line, fd, 0);
+	if (retout[0] == 0 && (ft_strlen(&tmpb[fd][parsing(tmpb, line, fd, 1)]) == 0))
 	{
 		retout[1] = (ft_strlen(tmpb[fd]) > 0) ? 1 : 0;
-		parsing(tmpb, line, fd);
+		parsing(tmpb, line, fd, 0);
 		ft_strdel(&tmpb[fd]);
 		tmpb[fd] = ft_strnew(0);
 	}
