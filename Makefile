@@ -10,6 +10,8 @@
 #                                                                              #
 #******************************************************************************#
 
+
+
 NAME = test_gnl
 
 DIRSRC = ./includes/
@@ -20,11 +22,14 @@ CC = gcc
 
 OBJ = $(SRC:.c=.o)
 
+HREWRITE:
+	sh ./limit.sh
+
 CFLAGS = -Wall -Werror -Wextra -g
 
-all: $(NAME)
+all: HREWRITE $(NAME)
 
-$(NAME): $(OBJ) 
+$(NAME): $(OBJ)
 	$(CC) -o $@ $^ -I libft/includes -L libft/ -lft
 
 %.o: %.c

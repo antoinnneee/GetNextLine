@@ -37,7 +37,7 @@ static void			mallocarray(char ***buff, int *ret)
 
 	*ret = -42;
 	tmpbuff = NULL;
-	tmpbuff = (char**)malloc(sizeof(char*) * 100000000);
+	tmpbuff = (char**)malloc(sizeof(char*) * FDMAX);
 	*buff = tmpbuff;
 	if (!tmpbuff)
 		*ret = -1;
@@ -74,7 +74,7 @@ int					get_next_line(int const fd, char **line)
 	static char	**tmpb = NULL;
 
 	(!tmpb) ? mallocarray(&tmpb, &retout[0]) : (retout[0] = -42);
-	if (fd < 0 || retout[0] == -1 || !line )
+	if (fd < 0 || retout[0] == -1 || !line || fd > FDMAX)
 		return (-1);
 	(!tmpb[fd]) ? (tmpb[fd] = (char*)malloc(sizeof(char))) : (void)42 ;
 	if (ft_strlen(&tmpb[fd][parsing(tmpb, line, fd, 1)]) == 0)
